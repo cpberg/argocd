@@ -2,8 +2,8 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: bgd
-  namespace: openshift-gitops
+  name: formsflow.ai
+  namespace: formsflow
 spec:
   generators:
   - list:
@@ -34,6 +34,8 @@ spec:
         automated:
           prune: true
           selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
       source:
         chart: '{{ chart }}'
         repoURL: https://github.com/cberg-aot/helm-charts
