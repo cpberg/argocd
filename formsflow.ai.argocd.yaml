@@ -1,0 +1,43 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: bgd
+  namespace: openshift-gitops
+spec:
+  generators:
+  - list:
+      elements:
+        - chart: formio-mongodb
+          version: 0.0.1
+        - chart: forms-flow-ai
+          version: 0.0.1
+        - chart: forms-flow-analytics
+          version: 0.0.1
+        - chart: forms-flow-bpm
+          version: 0.0.1
+        - chart: forms-flow-forms
+          version: 0.0.1
+        - chart: forms-flow-idm
+          version: 0.0.1
+        - chart: forms-flow-web
+          version: 0.0.1
+        - chart: forms-flow-webapi
+          version: 0.0.1
+
+  template:
+    metadata:
+      name: formsflow.ai
+    spec:
+      project: formsflow.ai
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+      source:
+        chart: '{{ chart }}'
+        repoURL: https://github.com/cberg-aot/helm-charts
+        targetRevision: '{{ version }}'
+      destination:
+       namespace: engineering-test
+       server: https://console-openshift-console.apps.devops.aot-technologies.com/
